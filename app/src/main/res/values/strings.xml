@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">DoNotDisturb</string>
+
+    <string-array name="main_titles">
+        <item>Dias</item>
+        <item>Hora inicio</item>
+        <item>Hora fin</item>
+        <item>Contactos</item>
+    </string-array>
+
 </resources>
