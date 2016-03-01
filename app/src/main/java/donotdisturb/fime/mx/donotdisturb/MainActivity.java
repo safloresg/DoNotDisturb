@@ -17,22 +17,15 @@ public class MainActivity extends ListActivity {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
 //    }
+
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        // if extending Activity
-//        setContentView(R.layout.activity_main);
-
-        // 1. pass context and data to the custom adapter
         MainAdapter adapter = new MainAdapter(this, generateData());
-
-        // if extending Activity 2. Get ListView from activity_main.xml
-//        ListView listView = (ListView) findViewById(R.id.);
-
-        // 3. setListAdapter
         setListAdapter(adapter);
     }
 
+// ---- Genera cada menu en la pantalla principal ----
     private ArrayList<Model> generateData(){
         ArrayList<Model> models = new ArrayList<Model>();
         models.add(new Model(R.drawable.ic_action_calendar_month,"Dias"));
