@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modelo para cada menu de la pantalla principal -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="#5396e3">
+
+    <!-- Icono -->
+    <ImageView
+        android:id="@+id/main_icon"
+        android:alpha="0.8"
+        android:layout_alignParentLeft="true"
+        android:layout_height="32dp"
+        android:layout_width="32dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_action_calendar_month"
+        android:tint="#ffffff" />
+
+    <!-- Etiqueta -->
+    <TextView
+        android:id="@+id/main_label"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@+id/main_icon"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="25dp"
+        android:clickable="true"
+        android:textSize="20dp"
+        android:textColor="#ffffff" />
+
+</RelativeLayout>

@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">DoNotDisturb</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="time_picker_example">Time Picker Example</string>
+    <string name="time_pick">Pick the time and press save button</string>
+    <string name="time_save">Save</string>
+    <string name="time_selected"></string>
+    <string name="time_current">The Time is:</string>
+
+    <string-array name="main_titles">
+        <item>Dias</item>
+        <item>Hora inicio</item>
+        <item>Hora fin</item>
+        <item>Contactos</item>
+    </string-array>
+
 </resources>
