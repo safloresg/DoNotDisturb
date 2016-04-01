@@ -8,7 +8,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import java.util.Calendar;
 
-public class StartDate extends AppCompatActivity {
+public class EndDate extends AppCompatActivity {
 
     private TimePicker timePicker;
     private TextView time;
