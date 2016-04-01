@@ -32,9 +32,17 @@ public class MainActivity extends ListActivity {
     {
         switch (pos)
         {
+            case 1:
+                Intent i1 = new Intent(MainActivity.this,StartDate.class);
+                startActivity(i1);
+                break;
+            case 2:
+                Intent i2 = new Intent(MainActivity.this,EndDate.class);
+                startActivity(i2);
+                break;
             case 3:
-                Intent i = new Intent(MainActivity.this,ContactsActivity.class);
-                startActivity(i);
+                Intent i3 = new Intent(MainActivity.this,ContactsActivity.class);
+                startActivity(i3);
                 break;
             default:
                 throw new UnsupportedOperationException();
