@@ -12,9 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imgSplash"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp" />
+        android:src="@drawable/ic_splash_loading"
+        android:layout_marginBottom="151dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,10 +23,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="AndroidQuiet"
         android:id="@+id/txtSplash"
-        android:layout_below="@+id/imgSplash"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="47dp"
         android:textColor="#5396e3"
         android:textStyle="bold"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="121dp" />
 </RelativeLayout>
