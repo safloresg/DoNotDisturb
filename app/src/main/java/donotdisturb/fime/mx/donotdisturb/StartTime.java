@@ -1,9 +1,14 @@
 package donotdisturb.fime.mx.donotdisturb;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,12 +17,11 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class StartTime extends AppCompatActivity {
+public class StartTime extends Activity {
     private TimePicker timePicker;
     private Calendar calendar;
     private String format = "";
-    private Button btn_silence;
-    private Button btn_normal;
+    private Button btn_start_time;
     private AudioManager audiom;
 
     @Override
@@ -26,26 +30,20 @@ public class StartTime extends AppCompatActivity {
         setContentView(R.layout.start_time);
 
         timePicker = (TimePicker) findViewById(R.id.start_time);
-        btn_silence = (Button) findViewById(R.id.btn_silence);
-        btn_normal = (Button) findViewById(R.id.btn_normal);
+        btn_start_time = (Button) findViewById(R.id.btn_start_time);
+
         calendar = Calendar.getInstance();
         audiom = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
-        btn_silence.setOnClickListener(new View.OnClickListener() {
+        btn_start_time.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(), "Guardando..", Toast.LENGTH_LONG).show();
-                //finish();
-            audiom.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-            }
-        });
-
-        btn_normal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(), "Guardando..", Toast.LENGTH_LONG).show();
-                //finish();
-                audiom.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                int start_hour = timePicker.getCurrentHour();
+                int start_min = timePicker.getCurrentMinute();
+                Log.d("HORA: ", String.valueOf(start_hour));
+                Log.d("MIN: ", String.valueOf(start_min));
+                finish();
             }
         });
 
@@ -54,9 +52,8 @@ public class StartTime extends AppCompatActivity {
         showTime(hour, min);
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     public void setTime(View view) {
-//        int hour = timePicker.getCurrentHour();
-//        int min = timePicker.getCurrentMinute();
         int hour = timePicker.getHour();
         int min = timePicker.getMinute();
         showTime(hour, min);
