@@ -33,11 +33,11 @@ public class MainActivity extends ListActivity {
         switch (pos)
         {
             case 1:
-                Intent i1 = new Intent(MainActivity.this,StartDate.class);
+                Intent i1 = new Intent(MainActivity.this,StartTime.class);
                 startActivity(i1);
                 break;
             case 2:
-                Intent i2 = new Intent(MainActivity.this,EndDate.class);
+                Intent i2 = new Intent(MainActivity.this,EndTime.class);
                 startActivity(i2);
                 break;
             case 3:
