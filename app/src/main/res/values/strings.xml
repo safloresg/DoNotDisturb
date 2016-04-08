@@ -16,6 +16,9 @@
     </string-array>
 
     <string name="menu_search">Search</string>
+    <string name="update_contacts">Update Contacts</string>
+    <string name="contacts">Contactos</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

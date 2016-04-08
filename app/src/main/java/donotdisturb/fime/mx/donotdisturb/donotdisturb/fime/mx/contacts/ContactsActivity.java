@@ -20,6 +20,7 @@ public class ContactsActivity extends Activity
     public void onCreate(Bundle icicle)
     {
         super.onCreate(icicle);
+        setTitle(R.string.contacts);
         setContentView(R.layout.activity_contacts);
         FragmentManager fm = getFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
