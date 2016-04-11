@@ -222,22 +222,37 @@ public class ContactsFragment
     private void updateContacts()
     {
         ContentResolver cr = getActivity().getContentResolver();
+
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, null);
+        Cursor phones ;
         cm.deleteAllContacts();
         if (cur !=null && cur.getCount() > 0)
         {
             Contact contact = null;
             while(cur.moveToNext())
             {
+                /*Retrive phone number of the current contact*/
+                phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                        null,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID)),
+                        null,
+                        null);
+                /**/
+
                 contact = new Contact();
                 contact.setName(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+                if (phones != null && phones.getCount()> 0)
+                {
+                    phones.moveToFirst();
+                    contact.setPhone(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+
+                }
                 cm.addContact(contact);
             }
             getLoaderManager().restartLoader(1,null,this);
         }
     }
-
     /*==================================================================================*/
 //                          START LOADER CALLBACKS SECTION
 /*==================================================================================*/

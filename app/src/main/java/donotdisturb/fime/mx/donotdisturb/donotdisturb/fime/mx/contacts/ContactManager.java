@@ -2,19 +2,23 @@ package donotdisturb.fime.mx.donotdisturb.donotdisturb.fime.mx.contacts;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 /**
  * Created by sergio on 4/2/16.
  */
 public class ContactManager {
 
-   private AndQuietDBHelper mHelper ;
+   private static AndQuietDBHelper mHelper ;
+    private static final String TAG = "CONTACT_MANAGER";
     private  Context context;
     ContactManager(Context context)
     {
         this.context = context;
          mHelper = new AndQuietDBHelper(context);
     }
+
+
 
     public Cursor getContacts()
     {
@@ -49,5 +53,26 @@ public class ContactManager {
             contactCur.moveToNext();
         }
 
+    }
+
+    public static boolean isContactSelected(String phoneNum,Context context)
+    {
+        if (mHelper == null)
+        {
+            mHelper = new AndQuietDBHelper(context);
+        }
+        AndQuietDBHelper.ContactCursor cCursor =mHelper.getContactByPhoneNum(phoneNum);
+        if (cCursor.getCount() > 0)
+        {
+            cCursor.moveToFirst();
+            Contact contact = cCursor.getcontact();
+            return contact.isSelected();
+        }
+        else
+        {
+            Log.d(TAG,"No Contact found");
+            return false;
+
+        }
     }
 }

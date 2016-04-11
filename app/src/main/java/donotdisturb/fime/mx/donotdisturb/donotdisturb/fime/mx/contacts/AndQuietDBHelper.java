@@ -4,19 +4,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorWrapper;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 
-/**
- * Created by sergio on 3/29/16.
- */
+import java.io.File;
+
+
 public class AndQuietDBHelper extends SQLiteOpenHelper {
-
     private static final String DB_NAME = "andquiet2.sqlite";
-
     private static final int VERSION = 1;
-
     private static final String TABLE_CONTACT = "contact";
     private static final String COLUMN_CONTACT_NAME = "name";
     private static  final String COLUMN_CONTACT_PHONE = "phone";
@@ -24,9 +21,8 @@ public class AndQuietDBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_CONTACT_SELECTED = "selected";
 
     public AndQuietDBHelper(Context context) {
-        super(context, DB_NAME, null, VERSION);
+        super(context, Environment.getExternalStorageDirectory() + File.separator + DB_NAME , null, VERSION);
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -53,15 +49,12 @@ public class AndQuietDBHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_CONTACT_PHONE,contact.getPhone());
         cv.put(COLUMN_CONTACT_SELECTED,contact.isSelected());
         getWritableDatabase().insert(TABLE_CONTACT,null,cv);
-
     }
 
     public Cursor SelectAllContacts()
     {
-
         Cursor wrapped = getReadableDatabase().query(TABLE_CONTACT
                 ,null,null,null,null,null,null,null);
-
         return new ContactCursor(wrapped);
     }
 
@@ -69,6 +62,18 @@ public class AndQuietDBHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_CONTACT);
+    }
+
+    public ContactCursor getContactByPhoneNum(String phoneNum)
+    {
+        Cursor wrapped = getWritableDatabase().query(TABLE_CONTACT,
+                null,
+                COLUMN_CONTACT_PHONE + " = ?",
+                new String[]{phoneNum},
+                null,
+                null,
+                    null );
+        return new ContactCursor(wrapped);
     }
 
 
@@ -85,15 +90,9 @@ public class AndQuietDBHelper extends SQLiteOpenHelper {
 
     public static class ContactCursor extends CursorWrapper
     {
-        /**
-         * Creates a cursor wrapper.
-         *
-         * @param cursor The underlying cursor to wrap.
-         */
         public ContactCursor(Cursor cursor) {
             super(cursor);
         }
-
 
         public Contact getcontact()
         {
@@ -101,7 +100,6 @@ public class AndQuietDBHelper extends SQLiteOpenHelper {
             {
                 return null;
             }
-
             Contact c = new Contact();
             c.set_id(getLong(getColumnIndex(COLUMN_CONTACT_ID)));
             c.setName(getString(getColumnIndex(COLUMN_CONTACT_NAME)));
@@ -109,8 +107,6 @@ public class AndQuietDBHelper extends SQLiteOpenHelper {
             c.setSelected(getInt(getColumnIndex(COLUMN_CONTACT_SELECTED))>0);
 
             return c;
-
-
         }
     }
 }
