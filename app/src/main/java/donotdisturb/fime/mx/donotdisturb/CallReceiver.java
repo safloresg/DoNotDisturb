@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -74,14 +75,15 @@ public class CallReceiver extends BroadcastReceiver {
         return false;
 
 
-            curHour = calendar.get(Calendar.HOUR);
+            curHour = calendar.get(Calendar.HOUR_OF_DAY);
             curMin = calendar.get(Calendar.MINUTE);
         //TODO change int comparisons to use .compare instead
         if ( curHour > startHour && curHour < endHour)
             return true;
         else
         {
-            if (startHour == endHour && startHour == curHour)
+            if (startHour == endHour && startHour== curHour)
+            //if (startHour == endHour && startHour == curHour)
             {
                 if (curMin > startMin && curMin < endMin)
                     return true;
@@ -91,6 +93,7 @@ public class CallReceiver extends BroadcastReceiver {
             else
                 return false;
         }
+
 
 
     }
