@@ -32,6 +32,10 @@ public class MainActivity extends ListActivity {
     {
         switch (pos)
         {
+            case 0:
+                Intent i0 = new Intent(MainActivity.this,DaysPicker.class);
+                startActivity(i0);
+                break;
             case 1:
                 Intent i1 = new Intent(MainActivity.this,StartTime.class);
                 startActivity(i1);

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DoNotDisturb</string>
+    <string name="app_name">AndroidQuiet</string>
 
     <string name="action_settings">Opciones</string>
     <string name="time_picker_example">Ejemplo</string>
