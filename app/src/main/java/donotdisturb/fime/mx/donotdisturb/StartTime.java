@@ -3,11 +3,13 @@ package donotdisturb.fime.mx.donotdisturb;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
 //import android.support.v7.app.AppCompatActivity;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +24,9 @@ public class StartTime extends Activity {
     private Calendar calendar;
     private String format = "";
     private Button btn_start_time;
-    private AudioManager audiom;
+    public static final String START_HOUR = "START_HOUR";
+    public static final String START_MIN = "START_MIN";
+    private SharedPreferences shPrefFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +35,8 @@ public class StartTime extends Activity {
 
         timePicker = (TimePicker) findViewById(R.id.start_time);
         btn_start_time = (Button) findViewById(R.id.btn_start_time);
-
         calendar = Calendar.getInstance();
-        audiom = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        shPrefFile = PreferenceManager.getDefaultSharedPreferences(this);
 
         btn_start_time.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.M)
@@ -41,23 +44,21 @@ public class StartTime extends Activity {
             public void onClick(View v) {
                 int start_hour = timePicker.getCurrentHour();
                 int start_min = timePicker.getCurrentMinute();
-                Log.d("HORA: ", String.valueOf(start_hour));
-                Log.d("MIN: ", String.valueOf(start_min));
+                shPrefFile.edit().putInt(START_HOUR, start_hour).commit();
+                shPrefFile.edit().putInt(START_MIN,start_min).commit();
+
                 finish();
             }
         });
+            int hour = shPrefFile.getInt(START_HOUR, Calendar.HOUR_OF_DAY);
+            int min = shPrefFile.getInt(START_MIN, Calendar.MINUTE);
+        timePicker.setCurrentHour(hour);
+        timePicker.setCurrentMinute(min);
 
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int min = calendar.get(Calendar.MINUTE);
         showTime(hour, min);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    public void setTime(View view) {
-        int hour = timePicker.getHour();
-        int min = timePicker.getMinute();
-        showTime(hour, min);
-    }
+
 
     public void showTime(int hour, int min) {
         if (hour == 0) {
