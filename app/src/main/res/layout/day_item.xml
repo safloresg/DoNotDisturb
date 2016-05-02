@@ -11,8 +11,6 @@
     android:paddingRight="20dip"
     android:paddingTop="4dip"
     android:fontFamily="sans-serif-light"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-
-    android:onClick="toggle">
+    android:textAppearance="?android:attr/textAppearanceLarge">
 
 </CheckedTextView>

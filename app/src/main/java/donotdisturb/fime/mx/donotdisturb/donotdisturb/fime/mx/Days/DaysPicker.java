@@ -1,38 +1,47 @@
-package donotdisturb.fime.mx.donotdisturb;
+package donotdisturb.fime.mx.donotdisturb.donotdisturb.fime.mx.Days;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Logger;
+
+import donotdisturb.fime.mx.donotdisturb.R;
 
 /**
  * Created by eduardo on 28/04/16.
  */
 public class DaysPicker extends Activity{
-    ArrayList weekdays = new ArrayList();
+
+    private enum DaysOfWeek{MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY}
+
+    ArrayList<String> weekdays = new ArrayList();
     ArrayList ret = new ArrayList();
     ListView lv;
     Button savedays;
+    SharedPreferences shPrefFile;
     DaysAdapter adapter;
     String c;
-    long courseid;
+  //  long courseid;
 
     public void initialize(){
-        weekdays.add("Lunes");
-        weekdays.add("Martes");
-        weekdays.add("Miercoles");
-        weekdays.add("Jueves");
-        weekdays.add("Viernes");
-        weekdays.add("Sabado");
-        weekdays.add("Domingo");
+        weekdays.add(this.getResources().getString(R.string.Monday));
+        weekdays.add(this.getResources().getString(R.string.Tuesday));
+        weekdays.add(this.getResources().getString(R.string.Wednesday));
+        weekdays.add(this.getResources().getString(R.string.Thursday));
+        weekdays.add(this.getResources().getString(R.string.Friday));
+        weekdays.add(this.getResources().getString(R.string.Saturday));
+        weekdays.add(this.getResources().getString(R.string.Sunday));
+
+        shPrefFile = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     public void getoldweekdays(long id){
@@ -46,10 +55,9 @@ public class DaysPicker extends Activity{
         ret.clear();
         initialize();
         lv = (ListView) findViewById(R.id.listView1);
-        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+    //    lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         savedays = (Button) findViewById(R.id.btnsavedays);
 
-        courseid = getIntent().getLongExtra("courseid", -1);
         adapter = new DaysAdapter(this, R.layout.day_item, R.id.checkedtextview, weekdays);
         lv.setAdapter(adapter);
         for(int i=0;i<ret.size();i++)lv.setItemChecked((Integer) ret.get(i), true);
@@ -65,7 +73,12 @@ public class DaysPicker extends Activity{
 
             @Override
             public void onClick(View arg0) {
-                ArrayList checkeditem = adapter.getCheckedItems();
+                HashMap<Integer,Boolean> checkeditems = adapter.getCheckedItems();
+                for (int i = 0; i < checkeditems.size();i++)
+                {
+                    shPrefFile.edit().putBoolean(weekdays.get(i), checkeditems.get(i)).commit();
+                    Log.d(weekdays.get(i),checkeditems.get(i).toString());
+                }
                 finish();
             }
         });

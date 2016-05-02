@@ -3,14 +3,18 @@ package donotdisturb.fime.mx.donotdisturb;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.nfc.Tag;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import donotdisturb.fime.mx.donotdisturb.donotdisturb.fime.mx.contacts.ContactManager;
 
@@ -26,8 +30,22 @@ public class CallReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (!isInTimeRange(context))
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Calendar calendar = Calendar.getInstance();
+
+        int startHour,startMin;
+        int endHour,endMin;
+        int curHour,curMin;
+        startHour = sharedPreferences.getInt(StartTime.START_HOUR,100);
+        startMin = sharedPreferences.getInt(StartTime.START_MIN,100);
+        endHour  = sharedPreferences.getInt(EndTime.END_HOUR,100);
+        endMin  = sharedPreferences.getInt(EndTime.END_MIN,100);
+        curHour = calendar.get(Calendar.HOUR_OF_DAY);
+        curMin = calendar.get(Calendar.MINUTE);
+        if (!isInTimeRange(startHour,startMin,endHour,endMin,curHour,curMin) || !isValidDay(sharedPreferences,context))
+        {
             return;
+        }
 
         TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
         AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
@@ -59,24 +77,12 @@ public class CallReceiver extends BroadcastReceiver {
     }
 
     //TODO unit test for this method
-    public boolean isInTimeRange(Context context)
+    public static boolean isInTimeRange(int startHour,int startMin, int endHour, int endMin,int curHour,int curMin)
     {
-        int startHour,startMin;
-        int endHour,endMin;
-        int curHour,curMin;
-        startHour = PreferenceManager.getDefaultSharedPreferences(context).getInt(StartTime.START_HOUR,100);
-        startMin = PreferenceManager.getDefaultSharedPreferences(context).getInt(StartTime.START_MIN,100);
-        endHour  = PreferenceManager.getDefaultSharedPreferences(context).getInt(EndTime.END_HOUR,100);
-        endMin  = PreferenceManager.getDefaultSharedPreferences(context).getInt(EndTime.END_MIN,100);
-
-        Calendar calendar = Calendar.getInstance();
         //Return false if no values found for any of the hours/min under the sharedPref file
         if (startHour == 100 || startMin == 100 || endHour == 100 || endMin == 100)
         return false;
 
-
-            curHour = calendar.get(Calendar.HOUR_OF_DAY);
-            curMin = calendar.get(Calendar.MINUTE);
         //TODO change int comparisons to use .compare instead
         if ( curHour > startHour && curHour < endHour)
             return true;
@@ -93,8 +99,20 @@ public class CallReceiver extends BroadcastReceiver {
             else
                 return false;
         }
+    }
 
+        public boolean isValidDay(SharedPreferences sharedPreferences,Context context)
+    {
+        String weekDay;
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
+        Calendar calendar = Calendar.getInstance();
 
+        weekDay = dayFormat.format(calendar.getTime());
+
+        boolean isValidDay = sharedPreferences.getBoolean(weekDay,false);
+        if (!isValidDay)
+            return false;
+        else return true;
 
     }
 }
